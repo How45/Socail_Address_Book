@@ -1,3 +1,5 @@
+package project;
+
 // SQL Connections
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -102,10 +104,25 @@ public class SQLReader {
         }
     }
 
+    public void detectConnection(){
+        try {
+            Class.forName("org.postgresql.Driver");
+            Connection connection = DriverManager.getConnection(url, username, password);
+            System.out.println("Connected");
+
+            connection.close();
+            System.out.println("Closed");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) throws Exception {
         SQLReader admin = new SQLReader();
         // admin.insertData("'Test'", null, null, null, null);
         // admin.deleteUser("'tim'");
+        admin.detectConnection();
 
    }
 }

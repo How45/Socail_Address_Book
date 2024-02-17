@@ -1,3 +1,5 @@
+package project;
+
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -9,7 +11,7 @@ public class helperFunction {
         Properties prop = new Properties();
         List<String> config = new ArrayList<>();
 
-        try (InputStream input = new FileInputStream("src/config.properties")) { // read data from a file in the form of sequence of bytes
+        try (InputStream input = new FileInputStream("src\\main\\java\\project\\config.properties")) { // read data from a file in the form of sequence of bytes
             prop.load(input); // Loads in properties file with properties liberary
 
             String url = prop.getProperty("db.url");
