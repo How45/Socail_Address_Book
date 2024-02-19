@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
+import java.util.ArrayList;
 
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
@@ -39,7 +40,7 @@ public class Notification {
         // Load client secrets.
         InputStream in = Notification.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
         if (in == null) {
-        throw new FileNotFoundException("Resource not found: " + CREDENTIALS_FILE_PATH);
+            throw new FileNotFoundException("Resource not found: " + CREDENTIALS_FILE_PATH);
         }
         GoogleClientSecrets clientSecrets =
             GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
@@ -52,7 +53,7 @@ public class Notification {
             .build();
         LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8888).build();
         Credential credential = new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
-        //returns an authorized Credential object.
+
         return credential;
     }
 
@@ -72,19 +73,21 @@ public class Notification {
         return "No subject";
     }
 
-    public static void main(String[] args) throws Exception {
-        String user = "mletellier02@gmail.com";
-        String senderMail = "mletellier02@gmail.com";
+    public static void getNotification(String userEmail, ArrayList<String> searchEmail) throws Exception{
 
-        // Create an instance of the class
         Notification notification = new Notification();
 
-        // Get unread messages from the specific sender
-        List<Message> unreadMessages = notification.getUnreadMessages(user, senderMail);
-
-        // Process unread messages
-        for (Message message : unreadMessages) {
-            System.out.println("Subject: " + notification.getMessageSubject(user, message.getId()));
+        List<List<Message>> unreadMessages = new ArrayList<>();
+        for(String emails : searchEmail){
+            unreadMessages.add(notification.getUnreadMessages(userEmail, emails));
         }
+
+        // Process Message
+        for (List<Message> userM : unreadMessages){
+            for (Message message : userM) {
+                System.out.println(userM + " :Subject: " + notification.getMessageSubject(userEmail, message.getId()) + "\n");
+            }
+        }
+
     }
 }
