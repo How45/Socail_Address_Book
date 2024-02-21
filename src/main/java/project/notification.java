@@ -57,14 +57,16 @@ public class Notification {
         return credential;
     }
 
-    public List<Message> getUnreadMessages(String userId, String senderEmail) throws IOException {
+    // Gets lists of the unreadmessages
+    public List<Message> getUnreadMessages(String senderEmail) throws IOException {
         String query = "is:unread from:" + senderEmail;
-        ListMessagesResponse response = service.users().messages().list(userId).setQ(query).execute();
+        ListMessagesResponse response = service.users().messages().list("me").setQ(query).execute();
         return response.getMessages();
     }
 
-    public String getMessageSubject(String userId, String messageId) throws IOException {
-        Message message = service.users().messages().get(userId, messageId).execute();
+    // Turns the list of string ID the subject
+    public String getMessageSubject(String messageId) throws IOException {
+        Message message = service.users().messages().get("me", messageId).execute();
         for (com.google.api.services.gmail.model.MessagePartHeader header : message.getPayload().getHeaders()) {
             if ("Subject".equals(header.getName())) {
                 return header.getValue();
@@ -79,13 +81,13 @@ public class Notification {
 
         List<List<Message>> unreadMessages = new ArrayList<>();
         for(String emails : searchEmail){
-            unreadMessages.add(notification.getUnreadMessages(userEmail, emails));
+            unreadMessages.add(notification.getUnreadMessages(emails));
         }
 
         // Process Message
         for (List<Message> userM : unreadMessages){
             for (Message message : userM) {
-                System.out.println(userM + " :Subject: " + notification.getMessageSubject(userEmail, message.getId()) + "\n");
+                System.out.println(message + " :Subject: " + notification.getMessageSubject(message.getId()) + "\n");
             }
         }
 
