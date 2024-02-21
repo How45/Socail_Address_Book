@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class helperFunction {
+public class HelperFunction {
     public static List<String> getConfig(){
         Properties prop = new Properties();
         List<String> config = new ArrayList<>();

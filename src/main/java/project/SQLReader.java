@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SQLReader {
-    private List<String> configList = helperFunction.getConfig();
+    private List<String> configList = HelperFunction.getConfig();
     private String url;
     private String username;
     private String password;
