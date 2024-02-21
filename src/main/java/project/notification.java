@@ -77,26 +77,4 @@ public class Notification {
         }
         return "No subject";
     }
-
-    public static void getNotification(ArrayList<String> searchEmail) throws Exception{
-
-        Notification notification = new Notification();
-
-        try{
-            List<List<Message>> unreadMessages = new ArrayList<>();
-            for(String emails : searchEmail){
-                unreadMessages.add(notification.getUnreadMessages(emails));
-            }
-
-            // Process Message
-            for (List<Message> userM : unreadMessages){
-                for (Message message : userM) {
-                    System.out.println(message + " :Subject: " + notification.getMessageSubject(message.getId()) + "\n");
-                }
-            }
-        } catch (Exception e){
-            System.out.println("Error: " + e.getMessage());
-        }
-
-    }
 }

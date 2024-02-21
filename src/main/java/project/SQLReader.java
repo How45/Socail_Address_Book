@@ -1,5 +1,6 @@
 package project;
 
+import java.lang.reflect.Array;
 // SQL Connections
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -104,6 +105,25 @@ public class SQLReader {
         }
     }
 
+    public ArrayList<String> getEmails(){
+        ArrayList<String> emails = new ArrayList<String>();
+        try {
+            Class.forName("org.postgresql.Driver");
+            Connection connection = DriverManager.getConnection(url, username, password);
+            String getEmail = "SELECT socails1 FROM address_book;";
+
+            PreparedStatement stmt = connection.prepareStatement(getEmail); // Good practice against SQL injections
+            ResultSet setEmails = stmt.executeQuery();
+            while (setEmails.next()){
+                emails.add(setEmails.getString("socails1"));
+            }
+            return emails;
+        } catch (Exception e){
+            System.out.println(e);
+        }
+        return null;
+    }
+
     public void detectConnection(){
         try {
             Class.forName("org.postgresql.Driver");
@@ -117,12 +137,4 @@ public class SQLReader {
             e.printStackTrace();
         }
     }
-
-    public static void main(String[] args) throws Exception {
-        SQLReader admin = new SQLReader();
-        // admin.insertData("'Test'", null, null, null, null);
-        // admin.deleteUser("'tim'");
-        admin.detectConnection();
-
-   }
 }
